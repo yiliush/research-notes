@@ -133,7 +133,7 @@ Three sub-categories:
 **Consumer AI platforms** ([[Platform Memory Features]]):\
 ChatGPT, Claude, Gemini, and Copilot all have native memory. These bypass the entire middleware/infrastructure supply side -- they're vertically integrated.
 
-**Notable: [[Claude Managed Agents Memory Store]]** -- Anthropic's managed agents memory is the architectural outlier in this zone. Where every other cloud/platform solution uses vectors, embeddings, or graph retrieval, Anthropic ships plain text documents at hierarchical paths — the agent navigates memory with the same file tools (`read`, `write`, `glob`, `grep`) it uses for code. No embedding model, no semantic search. This is the grassroots file-based approach (CLAUDE.md, Obsidian vaults) productized as developer infrastructure. The async **Dreams** consolidation feature (modeled on hippocampal sleep replay) addresses the grassroots ceiling of context rot without abandoning the file paradigm.
+**Notable:&#x20;**[[Claude Managed Agents Memory Store]] -- Anthropic's managed agents memory is the architectural outlier in this zone. Where every other cloud/platform solution uses vectors, embeddings, or graph retrieval, Anthropic ships plain text documents at hierarchical paths — the agent navigates memory with the same file tools (`read`, `write`, `glob`, `grep`) it uses for code. No embedding model, no semantic search. This is the grassroots file-based approach (CLAUDE.md, Obsidian vaults) productized as developer infrastructure. The async **Dreams** consolidation feature (modeled on hippocampal sleep replay) addresses the grassroots ceiling of context rot without abandoning the file paradigm.
 
 ### Grassroots / DIY (standalone, general)
 
@@ -152,79 +152,112 @@ How memory systems actually get used at runtime — independent of who built the
 ### Read: How Memory Enters Context
 
 **Context injection** -- memory is loaded into the system prompt or context window before the agent acts. The agent doesn't choose to access it; it's already there.
-- CLAUDE.md files (loaded by the harness at session start)
-- Cline memory bank ("you MUST read ALL memory bank files at start of EVERY task")
-- ChatGPT memory (platform selects and injects relevant memories)
-- Copilot Work IQ (persistent understanding injected into M365 context)
-- [[Claude Managed Agents Memory Store]] store descriptions (injected into system prompt automatically)
+
+* CLAUDE.md files (loaded by the harness at session start)
+
+* Cline memory bank ("you MUST read ALL memory bank files at start of EVERY task")
+
+* ChatGPT memory (platform selects and injects relevant memories)
+
+* Copilot Work IQ (persistent understanding injected into M365 context)
+
+* [[Claude Managed Agents Memory Store]] store descriptions (injected into system prompt automatically)
 
 **Memory tool calls** -- the agent explicitly invokes a memory-specific tool to search or retrieve.
-- [[Mem0]] (`search_memory`, `add_memory`)
-- [[Letta]] (`archival_memory_search`, `core_memory_replace`)
-- [[Claude-Mem]] MCP tools (`search`, `timeline`, `get_observations`)
-- [[Obsidian MCP Servers]] (search, read note)
+
+* [[Mem0]] (`search_memory`, `add_memory`)
+
+* [[Letta]] (`archival_memory_search`, `core_memory_replace`)
+
+* [[Claude-Mem]] MCP tools (`search`, `timeline`, `get_observations`)
+
+* [[Obsidian MCP Servers]] (search, read note)
 
 **File operations** -- the agent uses general-purpose file tools (`read`, `write`, `glob`, `grep`) to navigate memory. No memory-specific API exists; memory is just files.
-- [[Claude Managed Agents Memory Store]] (standard file tools on a mounted directory)
-- Direct vault access (agent reads .md files from disk)
+
+* [[Claude Managed Agents Memory Store]] (standard file tools on a mounted directory)
+
+* Direct vault access (agent reads .md files from disk)
 
 These aren't mutually exclusive. Claude Managed Agents Memory Store injects store descriptions (context injection) but the agent navigates the actual contents via file operations. [[Claude-Mem]] captures via hooks (automatic) but the agent retrieves via MCP tool calls.
 
 ### Write: How Memory Gets Created
 
 **Automatic capture** -- the system records memories without the agent explicitly deciding to store.
-- [[Claude-Mem]] lifecycle hooks (PostToolUse, SessionEnd capture observations automatically)
-- ChatGPT (extracts memories from conversation in the background)
-- Gemini (extracts "key details and preferences" without prompting)
+
+* [[Claude-Mem]] lifecycle hooks (PostToolUse, SessionEnd capture observations automatically)
+
+* ChatGPT (extracts memories from conversation in the background)
+
+* Gemini (extracts "key details and preferences" without prompting)
 
 **Agent-initiated** -- the agent decides to write a memory via tool call or file write.
-- [[Letta]] (`archival_memory_insert`, `core_memory_replace`) -- the agent is the author
-- [[Mem0]] (`add_memory`) -- though Mem0's extraction is system-controlled, the agent triggers it
-- [[Claude Managed Agents Memory Store]] -- the agent writes files when it judges something worth persisting
-- [[Cline Memory Bank]] -- the agent updates memory files during the session per its instructions
+
+* [[Letta]] (`archival_memory_insert`, `core_memory_replace`) -- the agent is the author
+
+* [[Mem0]] (`add_memory`) -- though Mem0's extraction is system-controlled, the agent triggers it
+
+* [[Claude Managed Agents Memory Store]] -- the agent writes files when it judges something worth persisting
+
+* [[Cline Memory Bank]] -- the agent updates memory files during the session per its instructions
 
 **User-curated** -- the user manually creates or edits memories.
-- Obsidian vaults (user writes and organizes notes)
-- CLAUDE.md (user edits directly in their editor)
-- ChatGPT memory settings (user adds/deletes explicit "saved memories")
+
+* Obsidian vaults (user writes and organizes notes)
+
+* CLAUDE.md (user edits directly in their editor)
+
+* ChatGPT memory settings (user adds/deletes explicit "saved memories")
 
 **Async consolidation** -- a separate process reorganizes or compresses memories after the session.
-- [[Claude Managed Agents Memory Store#Dreams|Dreams]] (model-powered consolidation of session transcripts into reorganized stores)
-- [[Karpathy LLM Wiki]] (raw → wiki synthesis, typically user-initiated)
-- [[Claude-Mem]] (AI compression of captured observations)
+
+* [[Claude Managed Agents Memory Store#Dreams|Dreams]] (model-powered consolidation of session transcripts into reorganized stores)
+
+* [[Karpathy LLM Wiki]] (raw → wiki synthesis, typically user-initiated)
+
+* [[Claude-Mem]] (AI compression of captured observations)
 
 ### Retrieval Decision: Who Decides What's Relevant
 
 **System-automatic** -- the platform decides what memories are relevant and surfaces them without being asked.
-- ChatGPT memory (platform selects relevant memories per conversation)
-- Copilot Work IQ (surfaces org context based on task)
+
+* ChatGPT memory (platform selects relevant memories per conversation)
+
+* Copilot Work IQ (surfaces org context based on task)
 
 **Agent-chosen** -- the agent decides when to search and what to search for.
-- [[Letta]] (agent searches its own archival memory as needed)
-- [[Claude Managed Agents Memory Store]] (agent navigates files using its own judgment)
-- [[Claude-Mem]] MCP tools (agent issues search queries)
-- [[Mem0]] (agent calls search when it judges context is needed)
+
+* [[Letta]] (agent searches its own archival memory as needed)
+
+* [[Claude Managed Agents Memory Store]] (agent navigates files using its own judgment)
+
+* [[Claude-Mem]] MCP tools (agent issues search queries)
+
+* [[Mem0]] (agent calls search when it judges context is needed)
 
 **Instruction-driven** -- the agent follows rules about what to read, typically set by the developer or user.
-- [[Cline Memory Bank]] ("read ALL files at start" -- no selection, no judgment)
-- CLAUDE.md (always loaded by the harness, agent doesn't choose)
-- Developer-authored system prompts that tell the agent when to call memory tools
+
+* [[Cline Memory Bank]] ("read ALL files at start" -- no selection, no judgment)
+
+* CLAUDE.md (always loaded by the harness, agent doesn't choose)
+
+* Developer-authored system prompts that tell the agent when to call memory tools
 
 ### Patterns by System
 
-| System | Read | Write | Retrieval decision |
-|--------|------|-------|-------------------|
-| [[Mem0]] | Tool calls | Agent-initiated (system extracts) | Agent-chosen |
-| [[Zep]] | Tool calls | Automatic (Graphiti extraction) | Agent-chosen |
-| [[Letta]] | Tool calls | Agent-initiated | Agent-chosen |
-| [[Claude Managed Agents Memory Store]] | File ops + context injection | Agent-initiated + async consolidation (Dreams) | Agent-chosen |
-| [[Claude-Mem]] | MCP tool calls | Automatic capture + async compression | Agent-chosen |
-| [[Honcho]] | Tool calls (dialectic query, five cost/depth tiers) + context injection | Automatic (background deriver at ~1K token threshold) + async consolidation (Dreaming) | System-reasoned (write) + agent-chosen (read) |
-| [[Cline Memory Bank]] | Context injection (read all) | Agent-initiated (update during session) | Instruction-driven (read everything) |
-| CLAUDE.md | Context injection | User-curated | Instruction-driven (always loaded) |
-| Obsidian vault + MCP | MCP tool calls | User-curated | Agent-chosen |
-| ChatGPT memory | Context injection | Automatic + user-curated | System-automatic |
-| Copilot Work IQ | Context injection | Automatic | System-automatic |
+| System                                 | Read                                                                    | Write                                                                                  | Retrieval decision                            |
+| -------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------- |
+| [[Mem0]]                               | Tool calls                                                              | Agent-initiated (system extracts)                                                      | Agent-chosen                                  |
+| [[Zep]]                                | Tool calls                                                              | Automatic (Graphiti extraction)                                                        | Agent-chosen                                  |
+| [[Letta]]                              | Tool calls                                                              | Agent-initiated                                                                        | Agent-chosen                                  |
+| [[Claude Managed Agents Memory Store]] | File ops + context injection                                            | Agent-initiated + async consolidation (Dreams)                                         | Agent-chosen                                  |
+| [[Claude-Mem]]                         | MCP tool calls                                                          | Automatic capture + async compression                                                  | Agent-chosen                                  |
+| [[Honcho]]                             | Tool calls (dialectic query, five cost/depth tiers) + context injection | Automatic (background deriver at ~1K token threshold) + async consolidation (Dreaming) | System-reasoned (write) + agent-chosen (read) |
+| [[Cline Memory Bank]]                  | Context injection (read all)                                            | Agent-initiated (update during session)                                                | Instruction-driven (read everything)          |
+| CLAUDE.md                              | Context injection                                                       | User-curated                                                                           | Instruction-driven (always loaded)            |
+| Obsidian vault + MCP                   | MCP tool calls                                                          | User-curated                                                                           | Agent-chosen                                  |
+| ChatGPT memory                         | Context injection                                                       | Automatic + user-curated                                                               | System-automatic                              |
+| Copilot Work IQ                        | Context injection                                                       | Automatic                                                                              | System-automatic                              |
 
 ## Cross-Cutting Competitive Axes
 
