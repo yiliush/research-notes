@@ -34,3 +34,4 @@ node_modules/
 *.log
 .claude/
 .collaborator
+.playwright-mcp/
